@@ -6,7 +6,8 @@ import scala.util.{Failure, Success, Try}
 
 class MidiPrinter extends javax.sound.midi.Receiver with LazyLogging {
 
-  var isOpen: Boolean = true
+  private var open: Boolean = true
+  def isOpen = open
 
   override def send(message: MidiMessage, timeStamp: Long): Unit = {
     if (message.getMessage()(1) == 11) close()
@@ -19,7 +20,6 @@ class MidiPrinter extends javax.sound.midi.Receiver with LazyLogging {
   }
 
   override def close(): Unit = {
-    isOpen = false
-    println("close")
+    open = false
   }
 }

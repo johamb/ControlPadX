@@ -1,5 +1,5 @@
 import javax.sound.midi._
-import de.sciss.midi.{Message, NoteOn}
+import de.sciss.midi.{Message, NoteOff, NoteOn}
 
 object LaunchpadConnector {
 
@@ -18,6 +18,13 @@ object LaunchpadConnector {
     transmitter.setReceiver(receiver)
     launchpadInDevice.open()
     launchpadOutDevice.open()
+    clearColors
+  }
+
+  def close = {
+    clearColors
+    launchpadInDevice.close()
+    launchpadOutDevice.close()
   }
 
   def printMessages = {
@@ -26,6 +33,18 @@ object LaunchpadConnector {
     val message = NoteOn(0, 11, 5)
     println(message.toString())
     receiver.send(message.toJava, -1)
+    while (launchpadInDevice.isOpen) {
+      if (!midiPrinter.isOpen) {
+        close
+        println("closed")
+      }
+    }
+    close
+  }
+
+  def clearColors = {
+    val messages = Array.range(11, 89).map(n => NoteOff(0, n, 0).toJava)
+    messages.foreach(receiver.send(_, -1))
   }
 
   def receiveMessages = {

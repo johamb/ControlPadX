@@ -1,4 +1,5 @@
 import javax.sound.midi._
+import de.sciss.midi.{Message, NoteOn}
 
 object LaunchpadConnector {
 
@@ -10,14 +11,21 @@ object LaunchpadConnector {
     MidiSystem.getMidiDeviceInfo.find(_.getName.contains("MIDIOUT2")).get
   )
 
-  def loop = {
-    val transmitter = launchpadInDevice.getTransmitter
-    val receiver = launchpadOutDevice.getReceiver
+  val transmitter = launchpadInDevice.getTransmitter
+  val receiver = launchpadOutDevice.getReceiver
+
+  def init = {
     transmitter.setReceiver(receiver)
-    transmitter.setReceiver(new MidiPrinter)
     launchpadInDevice.open()
     launchpadOutDevice.open()
-    while (launchpadInDevice.isOpen) {}
+  }
+
+  def printMessages = {
+    val midiPrinter = new MidiPrinter
+    transmitter.setReceiver(midiPrinter)
+    val message = NoteOn(0, 11, 5)
+    println(message.toString())
+    receiver.send(message.toJava, -1)
   }
 
   def receiveMessages = {

@@ -1,3 +1,4 @@
 object Main extends App {
-  LaunchpadConnector.loop
+  LaunchpadConnector.init
+  LaunchpadConnector.printMessages
 }

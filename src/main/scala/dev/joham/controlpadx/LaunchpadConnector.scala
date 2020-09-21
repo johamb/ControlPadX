@@ -41,7 +41,6 @@ object LaunchpadConnector {
         println("closed")
       }
     }
-    close
   }
 
   def clearColors = {

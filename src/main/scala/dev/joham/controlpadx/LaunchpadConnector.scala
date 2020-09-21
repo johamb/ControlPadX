@@ -1,5 +1,7 @@
-import javax.sound.midi._
-import de.sciss.midi.{Message, NoteOff, NoteOn}
+package dev.joham.controlpadx
+
+import de.sciss.midi.{NoteOff, NoteOn}
+import javax.sound.midi.{MidiDevice, MidiSystem}
 
 object LaunchpadConnector {
 

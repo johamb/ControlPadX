@@ -1,3 +1,5 @@
+package dev.joham.controlpadx
+
 import java.util
 
 import javax.sound.midi._
